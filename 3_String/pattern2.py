@@ -13,3 +13,36 @@ def search(p, t):
     return -1               # t에 p패턴이 없는 경우
 
 print(search(p, t))
+
+
+def bm(t, p):
+    N = len(t)  # 텍스트 길이
+    M = len(p)  # 패턴 길이
+
+    # 점프 테이블 초기화 (ASCII 범위 활용)
+    jump = [M] * (ord('z') + 1)  
+
+    # 패턴 내 문자별 이동 거리 설정
+    for i in range(M):  # 패턴 길이를 기준으로 해야 함
+        jump[ord(p[i])] = M - 1 - i
+
+    # 검색 시작 (패턴 끝에서부터 비교)
+    i = j = M - 1  
+    while i < N:  
+        if t[i] == p[j]:  # 문자 일치
+            if j == 0:  # 패턴의 첫 글자까지 일치하면 찾은 것
+                return i  # 매칭된 위치 반환
+            i -= 1
+            j -= 1
+        else:  # 불일치 시 점프
+            i += jump[ord(t[i])]
+            j = M - 1  # 다시 패턴의 끝에서 비교
+
+    return -1  # 패턴을 찾지 못한 경우
+
+# 테스트 예제
+t = "ABAAABCD"
+p = "ABC"
+print(bm(t, p))  # 기대 결과: 4
+
+
