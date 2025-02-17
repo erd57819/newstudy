@@ -9,6 +9,7 @@ txt = input()
 
 top = -1
 stack = [0] * 100
+# stack = []
 
 ans = 1
 for x in txt:
